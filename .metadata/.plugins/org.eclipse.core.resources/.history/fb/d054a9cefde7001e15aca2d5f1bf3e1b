@@ -1,0 +1,79 @@
+import java.util.List;
+import java.util.Scanner;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+import Model.AccountTest;
+import Model.BranchTest;
+import Model.CustomerTest;
+
+public class JavaMainClass {
+public static void main(String[] args) {
+	Configuration configuration=new Configuration().configure()
+			.addAnnotatedClass(null).addAnnotatedClass(null).addAnnotatedClass(null);
+	SessionFactory sessionFactory=configuration.buildSessionFactory();
+	Session session=sessionFactory.openSession();
+	Transaction transaction=session.beginTransaction();
+	
+	addData(session,transaction);
+	sessionFactory.close();
+}
+
+private static void addData(Session session, Transaction transaction) {
+	BranchTest b=new BranchTest();
+	Scanner sc=new Scanner(System.in);
+	
+	System.out.println("===================Insert Data===================");
+	System.out.println("Enter your Branch Name:");
+	b.setBrname(sc.next());
+	System.out.println("Enter your Branch City:");
+	b.setBrcity(sc.next());
+
+	System.out.println("================Add Customer to your Branch");
+	boolean addmorecutomer=true;
+	while(addmorecutomer) {
+		CustomerTest c=new CustomerTest();
+		System.out.println("Enter Customer name:");
+		c.setCname(sc.next());
+		System.out.println("Enter Customer City:");
+		c.setCity(sc.next());
+		System.out.println("Do you want to enter more customer (true/false):");
+		addmorecutomer=(sc.nextBoolean())?true:false;
+		b.addCustomer(c);
+	}
+	
+	System.out.println("================Add Account to customer");
+	boolean addmoreAccount=true;
+	while(addmoreAccount) {
+		AccountTest a=new AccountTest();
+		System.out.println("Enter customer Name your want to open Account");
+		String name=sc.next();
+		List<CustomerTest> c=b.getCustomerList();
+		CustomerTest found=null;
+		for(CustomerTest c1:c) {
+			if(c1.getCname().equalsIgnoreCase(name)) {
+				found=c1;
+			}
+		}
+		if(found==null)System.out.println("Could not found customer please enter correct data....");
+		else {
+			System.out.println("Enter Account Type:");
+			a.setA_type(sc.next());
+			System.out.println("Enter Account number:");
+			a.setAccount_number(sc.nextLong());
+			System.out.println("Enter Account Balance:");
+			a.setBalance(sc.nextDouble());
+			found.addAccount(a);
+		}
+		System.out.println("Do you want to enter more Account (true/false):");
+		addmoreAccount=(sc.nextBoolean())?true:false;
+	}
+	
+	session.persist(b);
+	transaction.commit();
+	
+}
+}

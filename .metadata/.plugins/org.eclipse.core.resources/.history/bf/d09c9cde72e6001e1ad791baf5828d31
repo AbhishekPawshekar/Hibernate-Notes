@@ -1,0 +1,25 @@
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class MainJavaFile {
+public static void main(String[] args) {
+	
+	Configuration configuration=new Configuration().configure().addAnnotatedClass(null).addAnnotatedClass(null);
+	SessionFactory sessionFactory=configuration.buildSessionFactory();
+	Session session=sessionFactory.openSession();
+	Transaction transaction=session.beginTransaction();
+	
+	insertToData(session,transaction);
+	
+	session.close();
+	sessionFactory.close();
+}
+
+private static void insertToData(Session session, Transaction transaction) {
+	Customer c=new Customer();
+	session.save(c);
+	transaction.commit();
+}
+}

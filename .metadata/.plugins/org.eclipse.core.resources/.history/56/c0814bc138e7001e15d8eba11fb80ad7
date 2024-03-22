@@ -1,0 +1,91 @@
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class MainJavaFile {
+public static void main(String[] args) {
+	
+	Configuration configuration=new Configuration().configure().addAnnotatedClass(Customer.class).addAnnotatedClass(Account.class);
+	SessionFactory sessionFactory=configuration.buildSessionFactory();
+	Session session=sessionFactory.openSession();
+	Transaction transaction=session.beginTransaction();
+	
+//	insertToData(session,transaction);
+//	displayData(session,transaction);
+	DeletePerticularAccount(session,transaction);
+	
+	session.close();
+	sessionFactory.close();
+}
+
+private static void DeletePerticularAccount(Session session, Transaction transaction) {
+	 Account a= session.get(Account.class,101 );
+	//if we directly use delete command then it will also delete customer  if we want to delete only one account.
+	// to overcome this we need to update record.
+	 // or we can just change cascade type.
+	session.delete(a);
+	transaction.commit();
+	System.out.println("account Delete successfully..!!");
+	
+}
+
+private static void displayData(Session session, Transaction transaction) {
+	String query="from Account a join a.customerRef c ";//for all result data 
+//	String query1="from Account a join a.customerRef c on a.accoutNumber=:accnumber";//for specific result data 
+	Query query_data=session.createQuery(query);
+//	query_data.setParameter("accnumber", 125463255l);//for specific result to set value externally
+	List<Object[]> result =query_data.getResultList();
+	System.out.println("AccountName\t\tAddress\tAccountnumber\tholderName\n-------------------");
+	for(Object[] o:result) {
+		Account acc_data=(Account) o[0];
+		Customer cust_data=(Customer) o[1];
+		System.out.println(cust_data.getAccountName()+"\t"+cust_data.getAddress()+"\t"+acc_data.getAccoutNumber()+"\t"+acc_data.getHolderName());
+	}
+	
+	
+	//wit criteria interface HCL
+	Criteria c=session.createCriteria(Customer.class);
+	List<Customer> result1=c.list();
+	for(Customer o:result1) {
+		List<Account> acc_data=(List<Account>) o.getAccountholding();
+		System.out.println(o.getAccountName()+"\t"+o.getAddress());
+		System.out.println("Accountnumber\tholderName\n-------------------");
+		for(Account a:acc_data)
+		System.out.println(a.getAccoutNumber()+"\t"+a.getHolderName());
+	}
+	
+	
+}
+
+private static void insertToData(Session session, Transaction transaction) {
+	Customer c=new Customer();
+	c.setAccountName("Abhishek pawshekar");
+	c.setAddress("Pune");
+	
+	
+	Account a1=new Account();
+	a1.setAccoutNumber(125463255);
+	a1.setHolderName("Abhishek pawshekar");
+	c.addAccount(a1);
+	
+	Account a2=new Account();
+	a2.setAccoutNumber(98456321);
+	a2.setHolderName("Abhishek pawshekar");
+	c.addAccount(a2);
+	
+	Account a3=new Account();
+	a3.setAccoutNumber(584595632);
+	a3.setHolderName("Abhishek pawshekar");
+	c.addAccount(a3);
+	
+	session.save(c);
+	transaction.commit();
+	System.out.println("Data saved...!!!");
+}
+}

@@ -1,0 +1,29 @@
+package Model;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name="convert_dwa_to_maven")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Product {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
+	private int productId;
+	private String productName;
+	private double productPrice;
+	private String productCategory;
+	private int productQty;
+}

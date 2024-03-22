@@ -1,0 +1,33 @@
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+@Entity
+@Table
+public class Customer {
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String AccountName;
+	private String address;
+	
+	@OneToMany(mappedBy = "customerRef")
+	@Cascade(CascadeType.ALL)
+	private List<Account> accountholding;
+	
+	public void addAccount(Account acc) {
+		if(accountholding==null) 
+			accountholding=new LinkedList<Account>();
+		acc.setCustomerRef(this);
+		accountholding.add(acc);
+		
+	}
+
+}

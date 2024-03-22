@@ -1,0 +1,58 @@
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class main_javaFile {
+	
+public static void main(String[] args) {
+	Configuration configuration=new Configuration().configure().addAnnotatedClass(Person.class).addAnnotatedClass(Passport.class);
+	SessionFactory sessionFactory=configuration.buildSessionFactory();
+	Session session=sessionFactory.openSession();
+	Transaction transaction=session.beginTransaction();
+	
+//	AddData(session);
+//	DisplayData(session);
+	update(session);
+	
+	transaction.commit();
+	session.close();
+	sessionFactory.close();
+}
+
+private static void update(Session session) {
+	Passport result= session.get(Passport.class, 1);
+	result.setPassname("gogog");
+	session.save(result);
+	System.out.println("updated...!!");
+	
+}
+
+private static void DisplayData(Session session) {
+	String seletedQuery="from Person p join Passport pa on p.passport_ref=pa.passport_number";
+	Query query=session.createQuery(seletedQuery);
+	List<Object[]> result= query.getResultList();
+	for(Object o[]:result) {
+		Person p=(Person)o[0];
+		Passport pass=(Passport)o[1];
+		System.out.println(p.getName()+"---"+pass.getPassname());
+	}
+	
+}
+
+private static void AddData(Session session) {
+	Passport p=new Passport();
+	p.setPassname("tata airways");
+	Person person=new Person();
+	person.setName("ansh");
+	person.setPassport_ref(p);
+	session.save(person);
+	session.save(p);
+	System.out.println("Data Added successfully");
+}
+
+}

@@ -1,0 +1,63 @@
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class MainJavaFile {
+public static void main(String[] args) {
+	
+	Configuration configuration=new Configuration().configure().addAnnotatedClass(Customer.class).addAnnotatedClass(Account.class);
+	SessionFactory sessionFactory=configuration.buildSessionFactory();
+	Session session=sessionFactory.openSession();
+	Transaction transaction=session.beginTransaction();
+	
+//	insertToData(session,transaction);//
+	displayData(session,transaction);
+	
+	session.close();
+	sessionFactory.close();
+}
+
+private static void displayData(Session session, Transaction transaction) {
+	String query="from Account a join a.Customer c ";
+	Query query_data=session.createQuery(query);
+	List<Object[]> result =query_data.getResultList();
+	System.out.println("AccountName\tAddress\tAccountnumber\tholderName");
+	for(Object[] o:result) {
+		Account acc_data=(Account) o[0];
+		Customer cust_data=(Customer) o[0];
+		System.out.println(cust_data.getAccountName()+"\t"+cust_data.getAddress()+"\t"+acc_data.getAccoutNumber()+"\t"+acc_data.getHolderName());
+	}
+	
+}
+
+private static void insertToData(Session session, Transaction transaction) {
+	Customer c=new Customer();
+	c.setAccountName("Abhishek pawshekar");
+	c.setAddress("Pune");
+	
+	
+	Account a1=new Account();
+	a1.setAccoutNumber(125463255);
+	a1.setHolderName("Abhishek pawshekar");
+	c.addAccount(a1);
+	
+	Account a2=new Account();
+	a2.setAccoutNumber(98456321);
+	a2.setHolderName("Abhishek pawshekar");
+	c.addAccount(a2);
+	
+	Account a3=new Account();
+	a3.setAccoutNumber(584595632);
+	a3.setHolderName("Abhishek pawshekar");
+	c.addAccount(a3);
+	
+	session.save(c);
+	transaction.commit();
+	System.out.println("Data saved...!!!");
+}
+}

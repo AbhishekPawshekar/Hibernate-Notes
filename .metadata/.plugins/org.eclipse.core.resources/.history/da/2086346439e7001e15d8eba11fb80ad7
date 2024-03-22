@@ -1,0 +1,20 @@
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table
+public class Nominee{
+	@Id
+	@GeneratedValue(strategy =GenerationType.IDENTITY)
+	private int  nId;
+	private String nName;
+	private int Age;
+	private String nRelation;
+	private String dob;
+	
+	
+	
+}

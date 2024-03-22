@@ -1,0 +1,28 @@
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table
+public class Passport {
+	@Id
+	private int passport_number;
+	private String passname; 
+	public int getPassport_number() {
+		return passport_number;
+	}
+	public void setPassport_number(int passport_number) {
+		this.passport_number = passport_number;
+	}
+	public String getPassname() {
+		return passname;
+	}
+	public void setPassname(String passname) {
+		this.passname = passname;
+	}
+	
+	
+
+}

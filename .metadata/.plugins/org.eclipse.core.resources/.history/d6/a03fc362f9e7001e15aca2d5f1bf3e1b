@@ -1,0 +1,36 @@
+package Model;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table
+public class BranchTest {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int Bid;
+	private String Brname;
+	private String Brcity;
+	
+	@OneToMany(mappedBy ="",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH} )
+	private List<CustomerTest> customerList;
+	
+	public void addCustomer(CustomerTest customer) {
+		if(customerList ==null) customerList=new LinkedList<CustomerTest>();
+		else {
+			customerList.add(customer);
+		}
+			
+	}
+	
+	
+	
+}

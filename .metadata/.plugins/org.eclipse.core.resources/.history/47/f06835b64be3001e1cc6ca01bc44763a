@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<form action="productinfo" method="Post" style=" background:black;color:white;border:10px solid grey; align-items:center;">
+<input type="text" placeholder="productName" name="pn"/>
+<input type="number" placeholder="productPrice" name="pp"/>
+<input type="text" placeholder="productCategory" name="pc"/>
+<input type="number" placeholder="productQTY" name="pq"/>
+<input type="submit" value="submit"/>
+</form>
+</body>
+</html>
