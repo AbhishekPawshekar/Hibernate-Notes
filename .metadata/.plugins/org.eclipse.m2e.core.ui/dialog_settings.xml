@@ -49,6 +49,7 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="Many_To_Many_relationship"/>
 			<item value="demo"/>
 			<item value="Test22_03_2024"/>
 			<item value="One_To_Many_relationship"/>
@@ -61,6 +62,7 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="Many_To_Many_relationship"/>
 			<item value="demo"/>
 			<item value="Test22_03_2024"/>
 			<item value="One_To_Many_relationship"/>
